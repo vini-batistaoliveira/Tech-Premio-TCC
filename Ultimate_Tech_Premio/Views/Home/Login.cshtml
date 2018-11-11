@@ -1,0 +1,54 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model Ultimate_Tech_Premio.Models.Usuario
+
+
+@if (@ViewBag.Cadastro != null)
+{
+    @ViewBag.Cadastro
+}
+
+@{
+    ViewBag.Title = "Login";
+}
+
+@using (Html.BeginForm("Login", "Home", FormMethod.Post))
+{
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    if (@ViewBag.ErroLogin != null)
+    {
+        @ViewBag.ErroLogin
+    }
+    <div class="form-group">
+        <div class="form-horizontal">
+            <br />
+            <div class="row">
+                <label>Login</label>
+            </div>
+            <div class="row">
+                @Html.TextBoxFor(a => a.cpf, null, new { @class = "form-control", required = true })
+                @Html.ValidationMessageFor(a => a.cpf)
+            </div>
+            <div class="row">
+                <label>Senha</label>
+            </div>
+            <div class="row">
+                @Html.PasswordFor(a => a.senha, new { @class = "form-control password", required = true })
+                @Html.ValidationMessageFor(a => a.senha)
+            </div>
+            <br />
+            <div class="row">
+                <button type="submit" class="btn btn-success">Login</button>
+
+                <button class="btn btn-primary" onclick="location.href='@Url.Action("Create", "Usuario")';return false;">Cadastre-se</button>
+            </div>
+        </div>
+
+    </div>
+}  

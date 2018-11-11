@@ -1,0 +1,119 @@
+﻿@model Ultimate_Tech_Premio.Models.Chamado
+
+@{
+    ViewBag.Title = "Fechar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <h4>Fechar Chamado</h4>
+    </div>
+
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.nome_usuario)
+    @Html.HiddenFor(model => model.data_chamado)
+    @Html.HiddenFor(model => model.descricao)
+    @Html.HiddenFor(model => model.status)
+    @Html.HiddenFor(model => model.titulo)
+    @Html.HiddenFor(model => model.Tecnico1)
+    @Html.HiddenFor(model => model.UsuarioId)
+    @Html.HiddenFor(model => model.Tecnico_nome)
+    @Html.HiddenFor(model => model.cordialidade_avaliacao)
+    @Html.HiddenFor(model => model.habilidade_avaliacao)
+    @Html.HiddenFor(model => model.nota_avaliacao)
+    @Html.HiddenFor(model => model.solucionado_nota)
+    @Html.HiddenFor(model => model.retorno_tec)
+    @Html.HiddenFor(model => model.Em_Andamento)
+    @Html.HiddenFor(model => model.motivo_reaberto)
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="form-group">
+        <div class="form-horizontal">
+
+            <div class="form-group">
+                <div class="row">
+                    <label>Nome Usuario</label>
+                </div>
+                <div class="row">
+                    @Html.DisplayFor(model => model.nome_usuario, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.nome_usuario, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <label>Data Chamado</label>
+                </div>
+                <div class="row">
+                    @Html.DisplayFor(model => model.data_chamado, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.data_chamado, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <label>Titulo</label>
+                </div>
+                <div class="row">
+                    @Html.DisplayFor(model => model.titulo, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.titulo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <label>Descrição</label>
+                </div>
+                <div class="row">
+                    @Html.TextAreaFor(model => model.descricao, new {@class = "form-control", disabled = true })
+                    @Html.ValidationMessageFor(model => model.descricao, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <label>Status</label>
+                </div>
+                <div class="row">
+                    @Html.DisplayFor(model => model.status)
+                    @Html.ValidationMessageFor(model => model.status, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <label>Tecnico</label>
+                </div>
+                <div class="row">
+                    @Html.DisplayFor(model => model.Tecnico_nome)
+                    @Html.ValidationMessageFor(model => model.Tecnico_nome, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <label>Retorno Tecnico</label>
+                </div>
+                <div class="row">
+                    @Html.TextAreaFor(model => model.retorno_tec, new { @class = "form-control", required = true })
+                    @Html.ValidationMessageFor(model => model.retorno_tec, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <button type="submit" class="btn btn-success">Fechar Chamado</button>
+                    <button class="btn btn-danger" onclick="location.href='@Url.Action("Index", "Chamado")';return false;">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

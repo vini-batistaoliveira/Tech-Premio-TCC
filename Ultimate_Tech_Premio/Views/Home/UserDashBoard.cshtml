@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "UserDashBoard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Tech Premio</h2>
+
+@{
+    ViewBag.Title = "Inicio";
+}
+
+@if (Session["UserName"] != null)
+{
+    <text>
+    Olá, @Session["UserName"].ToString() , Seja Bem Vindo(a) ao Tech Premio!!!
+    </text>
+} 
+

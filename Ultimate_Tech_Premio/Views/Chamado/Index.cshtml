@@ -1,0 +1,289 @@
+﻿@model IEnumerable<Ultimate_Tech_Premio.Models.Chamado>
+
+@using Ultimate_Tech_Premio.Enum
+
+@{
+
+    ViewBag.Title = "Chamados";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+
+<button class="btn btn-danger" onclick="location.href='@Url.Action("Create", "Chamado")';return false;">Novo Chamado</button>
+
+<div id="chamados-abertos">
+    <h4>Chamados Abertos</h4>
+
+    <table class="table table-condensed">
+        <tr>
+            <th style="width: 33%;">
+                <b>Data do Chamado</b>
+            </th>
+            <th style="width: 33%;">
+                <b>Titulo</b>
+            </th>
+            <th style="width: 33%; text-align: center;">
+                <b>#</b>
+            </th>
+        </tr>
+        @foreach (var item in Model.Where(c => c.status == Ultimate_Tech_Premio.Enum.EnumChamado.ABERTO.ToString() && c.Em_Andamento == false))
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.data_chamado)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.titulo)
+                </td>
+                <td style="text-align:center;">
+                    @if (Session["Permissao"].ToString() == "USER")
+                    {
+                        <button class="btn btn-primary" onclick="location.href='@Url.Action("Details", "Chamado", new { id = item.Id })';return false;">Detalhes</button>
+                    }
+                    else if (Session["Permissao"].ToString() == "ADM")
+                    {
+
+                        <button class="btn btn-primary" onclick="location.href='@Url.Action("Details", "Chamado", new { id = item.Id })';return false;">Detalhes</button>
+                        <button class="btn btn-primary" onclick="location.href='@Url.Action("Aceitar", "Chamado", new { id = item.Id })';return false;">Aceitar</button>
+                        <button class="btn btn-danger" onclick="location.href='@Url.Action("Delete", "Chamado", new { id = item.Id })';return false;">Deletar</button>
+                    }
+                    else if (Session["Permissao"].ToString() == "TEC")
+                    {
+                        <button class="btn btn-primary" onclick="location.href='@Url.Action("Details", "Chamado", new { id = item.Id })';return false;">Detalhes</button>
+                        <button class="btn btn-primary" onclick="location.href='@Url.Action("Aceitar", "Chamado", new { id = item.Id })';return false;">Aceitar</button>
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+<br />
+<br />
+
+<div id="chamados-fechados">
+    <h4>Chamados Fechados</h4>
+
+    <table class="table table-condensed">
+        <tr>
+            <th style="width: 33%;">
+                <b>Data do Chamado</b>
+            </th>
+            <th style="width: 33%;">
+                <b>Titulo</b>
+            </th>
+            <th style="width: 33%; text-align: center;">
+                <b>#</b>
+            </th>
+        </tr>
+
+        @foreach (var item in Model.Where(c => c.status == Ultimate_Tech_Premio.Enum.EnumChamado.FECHADO.ToString() && c.Em_Andamento == false))
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.data_chamado)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.titulo)
+                </td>
+                <td style="text-align:center;">
+
+                    @if (Session["Permissao"].ToString() == "USER")
+                    {
+                        <button class="btn btn-primary" onclick="location.href='@Url.Action("Details", "Chamado", new { id = item.Id })';return false;">Detalhes</button>
+                        if (item.avaliado == false)
+                        {
+                            <button class="btn btn-primary" onclick="location.href='@Url.Action("Avaliar", "Chamado", new { id = item.Id })';return false;">Avaliar</button>
+                        }
+
+                    }
+                    else if (Session["Permissao"].ToString() == "TEC")
+                    {
+                        <button class="btn btn-primary" onclick="location.href='@Url.Action("Details", "Chamado", new { id = item.Id })';return false;">Detalhes</button>
+                        <button class="btn btn-primary" onclick="location.href='@Url.Action("Reabrir", "Chamado", new { id = item.Id })';return false;">Reabrir</button>
+                    }
+                    else if (Session["Permissao"].ToString() == "ADM")
+                    {
+                        <button class="btn btn-primary" onclick="location.href='@Url.Action("Details", "Chamado", new { id = item.Id })';return false;">Detalhes</button>
+                        <button class="btn btn-primary" onclick="location.href='@Url.Action("Reabrir", "Chamado", new { id = item.Id })';return false;">Reabrir</button>
+                        <button class="btn btn-danger" onclick="location.href='@Url.Action("Delete", "Chamado", new { id = item.Id })';return false;">Deletar</button>
+                    }
+                </td>
+            </tr>
+
+        }
+    </table>
+</div>
+
+<br />
+<br />
+
+@if (Session["Permissao"].ToString() == "TEC")
+{
+    <div id="chamados-aberto-tec">
+
+        <h4>Meus Chamados Abertos</h4>
+
+        <table class="table table-condensed">
+            <tr>
+                <th style="width: 33%;">
+                    <b>Data do Chamado</b>
+                </th>
+                <th style="width: 33%;">
+                    <b>Titulo</b>
+                </th>
+                <th style="width: 33%; text-align: center;">
+                    <b>#</b>
+                </th>
+            </tr>
+
+            @foreach (var item in Model.Where(c => c.Tecnico1 == (int)Session["UserID"] && c.status == Ultimate_Tech_Premio.Enum.EnumChamado.ABERTO.ToString()))
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.data_chamado)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.titulo)
+                    </td>
+
+                    <td style="text-align:center;">
+                        <button class="btn btn-primary" onclick="location.href='@Url.Action("Details", "Chamado", new { id = item.Id })';return false;">Detalhes</button>
+                        <button class="btn btn-primary" onclick="location.href='@Url.Action("Fechar", "Chamado", new { id = item.Id })';return false;">Fechar</button>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+
+}
+
+<br />
+<br />
+
+@if (Session["Permissao"].ToString() == "ADM")
+{
+    <div id="chamados-aberto-adm">
+
+        <h4>Meus Chamados Abertos</h4>
+
+        <table class="table table-condensed">
+            <tr>
+                <th style="width: 33%;">
+                    <b>Data do Chamado</b>
+                </th>
+                <th style="width: 33%;">
+                    <b>Titulo</b>
+                </th>
+                <th style="width: 33%; text-align: center;">
+                    <b>#</b>
+                </th>
+            </tr>
+
+            @foreach (var item in Model.Where(c => c.Tecnico1 == (int)Session["UserID"] && c.status == Ultimate_Tech_Premio.Enum.EnumChamado.ABERTO.ToString()))
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.data_chamado)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.titulo)
+                    </td>
+
+                    <td style="text-align:center;">
+                        <button class="btn btn-primary" onclick="location.href='@Url.Action("Details", "Chamado", new { id = item.Id })';return false;">Detalhes</button>
+                        <button class="btn btn-primary" onclick="location.href='@Url.Action("Fechar", "Chamado", new { id = item.Id })';return false;">Fechar</button>
+                        <button class="btn btn-danger" onclick="location.href='@Url.Action("Delete", "Chamado", new { id = item.Id })';return false;">Deletar</button>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+
+}
+
+<br />
+<br />
+
+
+@if (Session["Permissao"].ToString() == "TEC")
+{
+    <div id="chamados-fechado-tec">
+        <h4>Meus Chamados Fechados</h4>
+
+        <table class="table table-condensed">
+            <tr>
+                <th style="width: 33%;">
+                    <b>Data do Chamado</b>
+                </th>
+                <th style="width: 33%;">
+                    <b>Titulo</b>
+                </th>
+                <th style="width: 33%; text-align: center;">
+                    <b>#</b>
+                </th>
+            </tr>
+
+            @foreach (var item in Model.Where(c => c.Tecnico1 == (int)Session["UserID"] && c.status == "FECHADO"))
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.data_chamado)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.titulo)
+                    </td>
+
+                    <td style="text-align:center;">
+                        <button class="btn btn-primary" onclick="location.href='@Url.Action("Details", "Chamado", new { id = item.Id })';return false;">Detalhes</button>
+                        <button class="btn btn-primary" onclick="location.href='@Url.Action("Reabrir", "Chamado", new { id = item.Id })';return false;">Reabrir</button>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+
+<br />
+<br />
+
+@if (Session["Permissao"].ToString() == "ADM")
+{
+    <div id="chamados-fechado-adm">
+        <h4>Meus Chamados Fechados</h4>
+
+        <table class="table table-condensed">
+            <tr>
+                <th style="width: 33%;">
+                    <b>Data do Chamado</b>
+                </th>
+                <th style="width: 33%;">
+                    <b>Titulo</b>
+                </th>
+                <th style="width: 33%; text-align: center;">
+                    <b>#</b>
+                </th>
+            </tr>
+
+            @foreach (var item in Model.Where(c => c.Tecnico1 == (int)Session["UserID"] && c.status == "FECHADO"))
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.data_chamado)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.titulo)
+                    </td>
+
+                    <td style="text-align:center;">
+                        <button class="btn btn-primary" onclick="location.href='@Url.Action("Details", "Chamado", new { id = item.Id })';return false;">Detalhes</button>
+                        <button class="btn btn-primary" onclick="location.href='@Url.Action("Reabrir", "Chamado", new { id = item.Id })';return false;">Reabrir</button>
+                        <button class="btn btn-danger" onclick="location.href='@Url.Action("Delete", "Chamado", new { id = item.Id })';return false;">Deletar</button>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+
+

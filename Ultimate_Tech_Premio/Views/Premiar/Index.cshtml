@@ -1,0 +1,69 @@
+﻿@model IEnumerable<Ultimate_Tech_Premio.Models.Resultado>
+
+<br />
+<br />
+
+@using (Html.BeginForm())
+{
+    <div class="form-group">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label>Data de Inicio</label>
+                        @Html.TextBox("start", null, new { @class = "form-control datepicker startClass", type = "date" })
+                    </div>
+
+                    <div class="col-md-2">
+                        <label>Data de Fim</label>
+                        @Html.TextBox("end", null, new { @class = "form-control datepicker endClass", type = "date" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <label>Ordenação:</label>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label>@Html.RadioButton("sortOrder", 1) Descendente</label>
+                </div>
+                <div class="col-md-2">
+                    <label>@Html.RadioButton("sortOrder", 2) Ascendente</label>
+                </div>
+            </div>
+
+            <div class="form-group-sm">
+                <div class="row">
+                    <input type="submit" value="Pesquisar" class="btn btn-primary" /> <span> </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    if (Model != null)
+    {
+        <h4>Pontuação Tecnicos </h4>
+
+        <table class="table table-condensed">
+            <tr>
+                <th>
+                    <label>Nome Tecnico</label>
+                </th>
+                <th>
+                    <label>Pontuação Tecnico</label>
+                </th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tecnico_nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.soma)
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+}

@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="tech_premioModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Chamado">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nome_usuario" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="data_chamado" Type="date" />
+    <Property Name="titulo" Type="varchar" MaxLength="50" />
+    <Property Name="descricao" Type="varchar" MaxLength="1000" />
+    <Property Name="status" Type="varchar" MaxLength="50" />
+    <Property Name="UsuarioId" Type="int" />
+    <Property Name="Tecnico" Type="int" />
+    <Property Name="nota_avaliacao" Type="int" />
+    <Property Name="habilidade_avaliacao" Type="int" />
+    <Property Name="cordialidade_avaliacao" Type="int" />
+    <Property Name="sugestao_avaliacao" Type="varchar" MaxLength="500" />
+    <Property Name="solucionado_avaliacao" Type="varchar" MaxLength="10" />
+    <Property Name="avaliado" Type="bit" />
+    <Property Name="retorno_tec" Type="varchar" MaxLength="500" />
+    <Property Name="reaberto" Type="bit" />
+    <Property Name="motivo_reaberto" Type="varchar" MaxLength="500" />
+    <Property Name="solucionado_nota" Type="int" />
+    <Property Name="Tecnico_nome" Type="nchar" MaxLength="10" />
+    <Property Name="Em_Andamento" Type="bit" />
+  </EntityType>
+  <EntityType Name="Premiacao">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="premio" Type="varchar" MaxLength="50" />
+    <Property Name="descricao" Type="varchar" MaxLength="200" />
+    <Property Name="data_premiacao" Type="datetime" />
+    <Property Name="Tecnico" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Usuario">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nome" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="cpf" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="email" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="telefone" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="senha" Type="varchar" MaxLength="500" Nullable="false" />
+    <Property Name="ativo" Type="bit" />
+    <Property Name="permissao" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <Association Name="FK_PremiacaoUsuario">
+    <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+    <End Role="Premiacao" Type="Self.Premiacao" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuario">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Premiacao">
+        <PropertyRef Name="Tecnico" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UsuarioChamado">
+    <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+    <End Role="Chamado" Type="Self.Chamado" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuario">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Chamado">
+        <PropertyRef Name="UsuarioId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="tech_premioModelStoreContainer">
+    <EntitySet Name="Chamado" EntityType="Self.Chamado" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Premiacao" EntityType="Self.Premiacao" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_PremiacaoUsuario" Association="Self.FK_PremiacaoUsuario">
+      <End Role="Usuario" EntitySet="Usuario" />
+      <End Role="Premiacao" EntitySet="Premiacao" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UsuarioChamado" Association="Self.FK_UsuarioChamado">
+      <End Role="Usuario" EntitySet="Usuario" />
+      <End Role="Chamado" EntitySet="Chamado" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

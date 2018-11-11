@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="tech_premioModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Chamado">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nome_usuario" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="data_chamado" Type="date" />
+          <Property Name="titulo" Type="varchar" MaxLength="50" />
+          <Property Name="descricao" Type="varchar" MaxLength="1000" />
+          <Property Name="status" Type="varchar" MaxLength="50" />
+          <Property Name="UsuarioId" Type="int" />
+          <Property Name="Tecnico" Type="int" />
+          <Property Name="nota_avaliacao" Type="int" />
+          <Property Name="habilidade_avaliacao" Type="int" />
+          <Property Name="cordialidade_avaliacao" Type="int" />
+          <Property Name="sugestao_avaliacao" Type="varchar" MaxLength="500" />
+          <Property Name="solucionado_avaliacao" Type="varchar" MaxLength="10" />
+          <Property Name="avaliado" Type="bit" />
+          <Property Name="retorno_tec" Type="varchar" MaxLength="500" />
+          <Property Name="reaberto" Type="bit" />
+          <Property Name="motivo_reaberto" Type="varchar" MaxLength="500" />
+          <Property Name="solucionado_nota" Type="int" />
+          <Property Name="Tecnico_nome" Type="nchar" MaxLength="10" />
+          <Property Name="Em_Andamento" Type="bit" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nome" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="cpf" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="telefone" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="senha" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="ativo" Type="bit" />
+          <Property Name="permissao" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_UsuarioChamado">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Chamado" Type="Self.Chamado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Chamado">
+              <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="tech_premioModelStoreContainer">
+          <EntitySet Name="Chamado" EntityType="Self.Chamado" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_UsuarioChamado" Association="Self.FK_UsuarioChamado">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Chamado" EntitySet="Chamado" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="tech_premioModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Chamado">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nome_usuario" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="data_chamado" Type="DateTime" Precision="0" />
+          <Property Name="titulo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="descricao" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UsuarioId" Type="Int32" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_UsuarioChamado" FromRole="Chamado" ToRole="Usuario" />
+          <Property Name="nota_avaliacao" Type="Int32" />
+          <Property Name="habilidade_avaliacao" Type="Int32" />
+          <Property Name="cordialidade_avaliacao" Type="Int32" />
+          <Property Name="sugestao_avaliacao" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="solucionado_avaliacao" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="avaliado" Type="Boolean" />
+          <Property Name="retorno_tec" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Tecnico1" Type="Int32" />
+          <Property Name="reaberto" Type="Boolean" />
+          <Property Name="motivo_reaberto" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="solucionado_nota" Type="Int32" />
+          <Property Name="Tecnico_nome" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Em_Andamento" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nome" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="cpf" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="telefone" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="senha" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ativo" Type="Boolean" />
+          <Property Name="permissao" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Chamado" Relationship="Self.FK_UsuarioChamado" FromRole="Usuario" ToRole="Chamado" />
+        </EntityType>
+        <Association Name="FK_UsuarioChamado">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Chamado" Type="Self.Chamado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Chamado">
+              <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="tech_premioEntities2" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Chamado" EntityType="Self.Chamado" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" />
+          <AssociationSet Name="FK_UsuarioChamado" Association="Self.FK_UsuarioChamado">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Chamado" EntitySet="Chamado" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="tech_premioModelStoreContainer" CdmEntityContainer="tech_premioEntities2">
+          <EntitySetMapping Name="Chamado">
+            <EntityTypeMapping TypeName="tech_premioModel.Chamado">
+              <MappingFragment StoreEntitySet="Chamado">
+                <ScalarProperty Name="Em_Andamento" ColumnName="Em_Andamento" />
+                <ScalarProperty Name="Tecnico_nome" ColumnName="Tecnico_nome" />
+                <ScalarProperty Name="solucionado_nota" ColumnName="solucionado_nota" />
+                <ScalarProperty Name="motivo_reaberto" ColumnName="motivo_reaberto" />
+                <ScalarProperty Name="reaberto" ColumnName="reaberto" />
+                <ScalarProperty Name="Tecnico1" ColumnName="Tecnico" />
+                <ScalarProperty Name="retorno_tec" ColumnName="retorno_tec" />
+                <ScalarProperty Name="avaliado" ColumnName="avaliado" />
+                <ScalarProperty Name="solucionado_avaliacao" ColumnName="solucionado_avaliacao" />
+                <ScalarProperty Name="sugestao_avaliacao" ColumnName="sugestao_avaliacao" />
+                <ScalarProperty Name="cordialidade_avaliacao" ColumnName="cordialidade_avaliacao" />
+                <ScalarProperty Name="habilidade_avaliacao" ColumnName="habilidade_avaliacao" />
+                <ScalarProperty Name="nota_avaliacao" ColumnName="nota_avaliacao" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="nome_usuario" ColumnName="nome_usuario" />
+                <ScalarProperty Name="data_chamado" ColumnName="data_chamado" />
+                <ScalarProperty Name="titulo" ColumnName="titulo" />
+                <ScalarProperty Name="descricao" ColumnName="descricao" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuario">
+            <EntityTypeMapping TypeName="tech_premioModel.Usuario">
+              <MappingFragment StoreEntitySet="Usuario">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="cpf" ColumnName="cpf" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="telefone" ColumnName="telefone" />
+                <ScalarProperty Name="senha" ColumnName="senha" />
+                <ScalarProperty Name="ativo" ColumnName="ativo" />
+                <ScalarProperty Name="permissao" ColumnName="permissao" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

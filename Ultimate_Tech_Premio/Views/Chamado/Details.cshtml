@@ -1,0 +1,74 @@
+﻿@model Ultimate_Tech_Premio.Models.Chamado
+
+@{
+    ViewBag.Title = "Detalhes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="form-group">
+    <div class="form-horizontal">
+        <div class="row">
+            <h4>Detalhes do Chamado</h4>
+        </div>
+        <br />
+        <div class="row">
+            <label class="control-label">Nome Usuario</label>
+        </div>
+        <div class="row">
+            @Html.DisplayFor(model => model.nome_usuario)
+        </div>
+
+        <div class="row">
+            <label class="control-label">Data do Chamado</label>
+        </div>
+        <div class="row">
+            @Html.DisplayFor(model => model.data_chamado)
+        </div>
+
+        <div class="row">
+            <label class="control-label">Titulo</label>
+        </div>
+        <div class="row">
+            @Html.DisplayFor(model => model.titulo)
+        </div>
+
+        <div class="row">
+            <label class="control-label">Descrição</label>
+        </div>
+        <div class="row">
+            @Html.DisplayFor(model => model.descricao)
+        </div>
+
+        <div class="row">
+            <label class="control-label">Status</label>
+        </div>
+        <div class="row">
+            @Html.DisplayFor(model => model.status)
+        </div>
+
+        <div class="row">
+            <label class="control-label">Tecnico</label>
+        </div>
+        <div class="row">
+            @Html.DisplayFor(model => model.Tecnico_nome)
+        </div>
+
+        @if (Model.reaberto == true)
+        {
+
+            <div class="row">
+                <label class="control-label">Motivo Reabertura</label>
+            </div>
+            <div class="row">
+                @Html.DisplayFor(model => model.motivo_reaberto)
+            </div>
+
+        }
+
+        <br />
+
+        <div class="row">
+            <button class="btn btn-danger" onclick="location.href='@Url.Action("Index", "Chamado")';return false;">Voltar</button>
+        </div>
+    </div>
+</div>
