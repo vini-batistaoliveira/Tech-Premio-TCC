@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Ultimate_Tech_Premio.Models.Usuario>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+
+<button class="btn btn-danger" onclick="location.href='@Url.Action("CreateAdm", "Usuario")';return false;">Novo Usuario</button>
+
+<br />
+<br />
+<table class="table table-condensed">
+    <tr>
+        <th style="width: 10%;">
+            <b>Nome</b>
+        </th>
+        <th style="width: 10%;">
+            <b>Login</b>
+        </th>
+        <th style="width: 10%;">
+            <b>Email</b>
+        </th>
+        <th style="width: 10%;">
+            <b>Telefone</b>
+        </th>
+        <th style="width: 10%;">
+            <b>Permissão</b>
+        </th>
+        <th style="text-align: center; width: 50%;">
+            <b>#</b>
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.nome)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.cpf)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.telefone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.permissao)
+        </td>
+        <td style="text-align: center">
+            <button class="btn btn-primary" onclick="location.href='@Url.Action("Edit", "Usuario", new { id = item.Id })';return false;">Editar</button>
+            <button class="btn btn-primary" onclick="location.href='@Url.Action("Details", "Usuario", new { id = item.Id })';return false;">Detalhes</button>
+            <button class="btn btn-danger" onclick="location.href='@Url.Action("Delete", "Usuario", new { id = item.Id })';return false;">Deletar</button>
+            </td>
+    </tr>
+    }
+
+</table>

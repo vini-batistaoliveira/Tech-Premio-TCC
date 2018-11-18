@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Tech Premio</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Tech Premio", "UserDashBoard", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    @if (Session["Permissao"] == null)
+                    {
+                    }
+
+                    else if (Session["Permissao"].ToString() == "ADM")
+                    {
+                        <li>@Html.ActionLink("Chamados", "Index", "Chamado")</li>
+                        <li>@Html.ActionLink("Relatorio Pontuação Tecnicos", "Index", "Premiar")</li>
+                        <li>@Html.ActionLink("Administrar Usuarios", "Index", "Usuario")</li>
+                        <li>@Html.ActionLink("Logout", "Logout", "Home")</li>
+                    }
+                    else if (Session["Permissao"].ToString() == "USER")
+                    {
+                        <li>@Html.ActionLink("Chamados", "Index", "Chamado")</li>
+                        <li>@Html.ActionLink("Logout", "Logout", "Home")</li>
+                    }
+                    else if (Session["Permissao"].ToString() == "TEC")
+                    {
+                        <li>@Html.ActionLink("Chamados", "Index", "Chamado")</li>
+                        <li>@Html.ActionLink("Logout", "Logout", "Home")</li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Tech Premio</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

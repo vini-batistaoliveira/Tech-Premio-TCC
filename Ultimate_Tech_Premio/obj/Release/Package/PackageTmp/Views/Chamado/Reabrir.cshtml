@@ -1,0 +1,75 @@
+﻿
+@model Ultimate_Tech_Premio.Models.Chamado
+@using Ultimate_Tech_Premio.Enum
+
+@{
+    ViewBag.Title = "Reabrir";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <h4>Reabrir Chamado</h4>
+</div>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.nome_usuario)
+    @Html.HiddenFor(model => model.data_chamado)
+    @Html.HiddenFor(model => model.descricao)
+    @Html.HiddenFor(model => model.status)
+    @Html.HiddenFor(model => model.titulo)
+    @Html.HiddenFor(model => model.Tecnico1)
+    @Html.HiddenFor(model => model.UsuarioId)
+    @Html.HiddenFor(model => model.Tecnico_nome)
+    @Html.HiddenFor(model => model.cordialidade_avaliacao)
+    @Html.HiddenFor(model => model.habilidade_avaliacao)
+    @Html.HiddenFor(model => model.nota_avaliacao)
+    @Html.HiddenFor(model => model.solucionado_nota)
+    @Html.HiddenFor(model => model.retorno_tec)
+    @Html.HiddenFor(model => model.Em_Andamento)
+    
+    <div class="form-group">
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="form-group">
+                <div class="row">
+                    <label>Titulo do Chamado</label>
+                </div>
+                <div class="row">
+                    @Html.DisplayFor(model => model.titulo, new { htmlAttributes = new { @class = "form-control", required = true } })
+                    @Html.ValidationMessageFor(model => model.titulo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <label>Descrição do Problema</label>
+                </div>
+                <div class="row">
+                    @Html.DisplayFor(model => model.descricao, new { @class = "form-control", required = true })
+                    @Html.ValidationMessageFor(model => model.descricao, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <label>Motivo Reabertura</label>
+                </div>
+                <div class="row">
+                    @Html.TextAreaFor(model => model.motivo_reaberto, new { @class = "form-control", required = true })
+                    @Html.ValidationMessageFor(model => model.motivo_reaberto, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <button type="submit" class="btn btn-success">Criar Chamado</button>
+                    <button class="btn btn-danger" onclick="location.href='@Url.Action("Index", "Chamado")';return false;">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
