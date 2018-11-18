@@ -48,12 +48,21 @@ namespace Ultimate_Tech_Premio.Controllers
         {
             if (ModelState.IsValid)
             {
+                var resultUser = db.Usuario.Where(c => c.cpf == usuario.cpf).ToList();
+                
+                if (resultUser.Count > 0)
+                {
+                    ModelState.AddModelError(string.Empty,"Usuario já cadastrado!!!");
+
+                    return View();
+                }
+
                 usuario.permissao = Enum.EnumPermissao.USER.ToString();
                 usuario.ativo = true;
                 db.Usuario.Add(usuario);
                 db.SaveChanges();
                 ViewBag.Cadastro = "Cadastro Relizado Com Sucesso!!!";
-                return RedirectToAction("Login","Home");
+                return RedirectToAction("Login", "Home");
             }
 
             return View(usuario);
@@ -86,7 +95,7 @@ namespace Ultimate_Tech_Premio.Controllers
                 db.Usuario.Add(usuario);
                 db.SaveChanges();
                 ViewBag.Cadastro = "Cadastro Relizado Com Sucesso!!!";
-                return RedirectToAction("Login", "Home");
+                return RedirectToAction("Index", "Usuario");
             }
 
             return View(usuario);

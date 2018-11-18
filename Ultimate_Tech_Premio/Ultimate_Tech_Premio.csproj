@@ -293,11 +293,6 @@
     <Content Include="Views\Chamado\Delete.cshtml" />
     <Content Include="Views\Chamado\Details.cshtml" />
     <Content Include="Views\Chamado\Index.cshtml" />
-    <Content Include="Views\Tecnico\Create.cshtml" />
-    <Content Include="Views\Tecnico\Delete.cshtml" />
-    <Content Include="Views\Tecnico\Details.cshtml" />
-    <Content Include="Views\Tecnico\Edit.cshtml" />
-    <Content Include="Views\Tecnico\Index.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\UserDashBoard.cshtml" />
     <Content Include="Views\Chamado\Avaliar.cshtml" />

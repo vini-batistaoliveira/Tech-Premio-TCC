@@ -11,69 +11,83 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
+    <div class="form-group">
 
-    <div class="form-horizontal">
-        <h4>Avaliacao_Chamado</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
-        @Html.HiddenFor(model => model.nome_usuario)
-        @Html.HiddenFor(model => model.data_chamado)
-        @Html.HiddenFor(model => model.descricao)
-        @Html.HiddenFor(model => model.status)
-        @Html.HiddenFor(model => model.titulo)
-        @Html.HiddenFor(model => model.Tecnico1)
-        @Html.HiddenFor(model => model.UsuarioId)
-        @Html.HiddenFor(model => model.Tecnico_nome)
+        <div class="form-horizontal">
+            <h4>Avaliacao_Chamado</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.nome_usuario)
+            @Html.HiddenFor(model => model.data_chamado)
+            @Html.HiddenFor(model => model.descricao)
+            @Html.HiddenFor(model => model.status)
+            @Html.HiddenFor(model => model.titulo)
+            @Html.HiddenFor(model => model.Tecnico1)
+            @Html.HiddenFor(model => model.UsuarioId)
+            @Html.HiddenFor(model => model.Tecnico_nome)
+
+            <div class="form-group">
+                <div class="row">
+                    <label class="control-label">O Chamado Foi Solucionado?</label>
+                </div>
+                <div class="row">
+                    @Html.DropDownListFor(model => model.solucionado_avaliacao, new SelectList(ViewBag.solucionadoSN, "SIM"), "Selecione", new { @class = "form-control required", required = true })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <label class="control-label">Cordialidade do Tecnico</label>
+                </div>
+                <div class="row">
+                    @Html.DropDownListFor(model => model.cordialidade_avaliacao, new SelectList(ViewBag.Notas), "Selecione", new { @class = "form-control required", required = true })
+                    @Html.ValidationMessageFor(model => model.cordialidade_avaliacao, "", new { @class = "text-danger" })
+                </div>
+            </div>
 
 
-        <div class="form-group">
-            <label class="control-label">O Chamado Foi Solucionado?</label>
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.solucionado_avaliacao, new SelectList(ViewBag.solucionadoSN, "SIM"), "Selecione")
+            <div class="form-group">
+                <div class="row">
+                    <label class="control-label">Habilidade do Tecnico</label>
+                </div>
+                <div class="row">
+                    @Html.DropDownListFor(model => model.habilidade_avaliacao, new SelectList(ViewBag.Notas), "Selecione", new { @class = "form-control required", required = true })
+                    @Html.ValidationMessageFor(model => model.habilidade_avaliacao, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <label class="control-label">Sugestão de Melhora Para um Futuro Chamado</label>
+                </div>
+                <div class="row">
+                    @Html.EditorFor(model => model.sugestao_avaliacao, new { htmlAttributes = new { @class = "form-control", required = true } })
+                    @Html.ValidationMessageFor(model => model.sugestao_avaliacao, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <label class="control-label">Nota Geral do Tecnico e do Chamado</label>
+                </div>
+                <div class="row">
+                    @Html.DropDownListFor(model => model.nota_avaliacao, new SelectList(ViewBag.Notas), "Selecione", new { @class = "form-control", required = true })
+                    @Html.ValidationMessageFor(model => model.nota_avaliacao, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <input type="submit" value="Avaliar" class="btn btn-primary" />
+                    <button class="btn btn-danger" onclick="location.href='@Url.Action("Index", "Chamado")';return false;">Cancelar</button>
+                </div>
             </div>
         </div>
 
-        <div class="form-group">
-            <label class="control-label">Cordialidade do Tecnico</label>
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.cordialidade_avaliacao, new SelectList(ViewBag.Notas), "Selecione")
-                @Html.ValidationMessageFor(model => model.cordialidade_avaliacao, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
-        <div class="form-group">
-            <label class="control-label">Habilidade do Tecnico</label>
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.habilidade_avaliacao, new SelectList(ViewBag.Notas), "Selecione")
-                @Html.ValidationMessageFor(model => model.habilidade_avaliacao, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label">Sugestão de Melhora Para um Futuro Chamado</label>
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.sugestao_avaliacao, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.sugestao_avaliacao, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label">Nota Geral do Tecnico e do Chamado</label>
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.nota_avaliacao, new SelectList(ViewBag.Notas), "Selecione")
-                @Html.ValidationMessageFor(model => model.nota_avaliacao, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Avaliar" class="btn btn-default" />
-            </div>
+        <div>
+            @Html.ActionLink("Back to List", "Index")
         </div>
     </div>
 }
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>

@@ -27,17 +27,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Premiacao">
-      <EntityTypeMapping TypeName="tech_premioModel.Premiacao">
-        <MappingFragment StoreEntitySet="Premiacao">
-          <ScalarProperty Name="Tecnico" ColumnName="Tecnico" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="premio" ColumnName="premio" />
-          <ScalarProperty Name="descricao" ColumnName="descricao" />
-          <ScalarProperty Name="data_premiacao" ColumnName="data_premiacao" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Usuario">
       <EntityTypeMapping TypeName="tech_premioModel.Usuario">
         <MappingFragment StoreEntitySet="Usuario">

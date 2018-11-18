@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="27d75eda13fa4c799f45545686adfd59" Name="Diagram1" ZoomLevel="96">
+      <Diagram DiagramId="27d75eda13fa4c799f45545686adfd59" Name="Diagram1" ZoomLevel="72">
         <EntityTypeShape EntityType="tech_premioModel.Chamado" Width="2.125" PointX="3.25" PointY="0.5" IsExpanded="true" />
         <EntityTypeShape EntityType="tech_premioModel.Usuario" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <AssociationConnector Association="tech_premioModel.FK_UsuarioChamado" ManuallyRouted="false" />

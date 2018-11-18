@@ -25,16 +25,6 @@
     <Property Name="Tecnico_nome" Type="nchar" MaxLength="10" />
     <Property Name="Em_Andamento" Type="bit" />
   </EntityType>
-  <EntityType Name="Premiacao">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="premio" Type="varchar" MaxLength="50" />
-    <Property Name="descricao" Type="varchar" MaxLength="200" />
-    <Property Name="data_premiacao" Type="datetime" />
-    <Property Name="Tecnico" Type="int" Nullable="false" />
-  </EntityType>
   <EntityType Name="Usuario">
     <Key>
       <PropertyRef Name="Id" />
@@ -48,18 +38,6 @@
     <Property Name="ativo" Type="bit" />
     <Property Name="permissao" Type="varchar" MaxLength="50" />
   </EntityType>
-  <Association Name="FK_PremiacaoUsuario">
-    <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
-    <End Role="Premiacao" Type="Self.Premiacao" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Usuario">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Premiacao">
-        <PropertyRef Name="Tecnico" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_UsuarioChamado">
     <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
     <End Role="Chamado" Type="Self.Chamado" Multiplicity="*" />
@@ -74,12 +52,7 @@
   </Association>
   <EntityContainer Name="tech_premioModelStoreContainer">
     <EntitySet Name="Chamado" EntityType="Self.Chamado" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Premiacao" EntityType="Self.Premiacao" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
-    <AssociationSet Name="FK_PremiacaoUsuario" Association="Self.FK_PremiacaoUsuario">
-      <End Role="Usuario" EntitySet="Usuario" />
-      <End Role="Premiacao" EntitySet="Premiacao" />
-    </AssociationSet>
     <AssociationSet Name="FK_UsuarioChamado" Association="Self.FK_UsuarioChamado">
       <End Role="Usuario" EntitySet="Usuario" />
       <End Role="Chamado" EntitySet="Chamado" />

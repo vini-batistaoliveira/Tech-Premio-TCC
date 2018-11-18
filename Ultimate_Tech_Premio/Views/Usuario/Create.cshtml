@@ -10,7 +10,11 @@
     @Html.AntiForgeryToken()
     <div class="form-group">
         <div class="form-horizontal">
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="row">
+                <div class="alert alert-danger col-md-4" role="alert">
+                    @Html.ValidationSummary(true, "")
+                </div>
+            </div>
 
             <div class="form-group">
                 <div class="row">

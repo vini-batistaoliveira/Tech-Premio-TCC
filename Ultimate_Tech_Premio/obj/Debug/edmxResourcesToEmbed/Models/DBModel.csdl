@@ -26,17 +26,6 @@
     <Property Name="Tecnico_nome" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
     <Property Name="Em_Andamento" Type="Boolean" />
   </EntityType>
-  <EntityType Name="Premiacao">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="premio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="descricao" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="data_premiacao" Type="DateTime" Precision="3" />
-    <Property Name="Tecnico" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="Usuario" Relationship="tech_premioModel.FK_PremiacaoUsuario" FromRole="Premiacao" ToRole="Usuario" />
-  </EntityType>
   <EntityType Name="Usuario">
     <Key>
       <PropertyRef Name="Id" />
@@ -50,7 +39,6 @@
     <Property Name="ativo" Type="Boolean" />
     <Property Name="permissao" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="Chamado" Relationship="Self.FK_UsuarioChamado" FromRole="Usuario" ToRole="Chamado" />
-    <NavigationProperty Name="Premiacao" Relationship="tech_premioModel.FK_PremiacaoUsuario" FromRole="Usuario" ToRole="Premiacao" />
   </EntityType>
   <Association Name="FK_UsuarioChamado">
     <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
@@ -66,27 +54,10 @@
   </Association>
   <EntityContainer Name="tech_premioEntities2" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Chamado" EntityType="Self.Chamado" />
-    <EntitySet Name="Premiacao" EntityType="Self.Premiacao" />
     <EntitySet Name="Usuario" EntityType="Self.Usuario" />
     <AssociationSet Name="FK_UsuarioChamado" Association="Self.FK_UsuarioChamado">
       <End Role="Usuario" EntitySet="Usuario" />
       <End Role="Chamado" EntitySet="Chamado" />
     </AssociationSet>
-    <AssociationSet Name="FK_PremiacaoUsuario" Association="tech_premioModel.FK_PremiacaoUsuario">
-      <End Role="Usuario" EntitySet="Usuario" />
-      <End Role="Premiacao" EntitySet="Premiacao" />
-    </AssociationSet>
   </EntityContainer>
-  <Association Name="FK_PremiacaoUsuario">
-    <End Type="tech_premioModel.Usuario" Role="Usuario" Multiplicity="1" />
-    <End Type="tech_premioModel.Premiacao" Role="Premiacao" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Usuario">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Premiacao">
-        <PropertyRef Name="Tecnico" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
 </Schema>
