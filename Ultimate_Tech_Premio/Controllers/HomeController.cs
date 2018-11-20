@@ -60,5 +60,16 @@ namespace Tech.Controllers
 
             return RedirectToAction("Login");
         }
+
+        public ActionResult ErroPermissao()
+        {
+            return View();
+        }
+
+        public ActionResult Erro()
+        {
+            return View();
+        }
+
     }
 }

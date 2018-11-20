@@ -15,7 +15,6 @@ namespace Ultimate_Tech_Premio.Controllers
     {
         private tech_premioEntities2 db = new tech_premioEntities2();
 
-        // GET: Chamado
         public ActionResult Index()
         {
             if (Session["UserID"] != null)
@@ -35,248 +34,404 @@ namespace Ultimate_Tech_Premio.Controllers
                 }
             }
 
-            return View();
+            return RedirectToAction("Erro", "Home");
 
         }
 
-        // GET: Chamado/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
+            if (Session["UserId"] != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Chamado chamado = db.Chamado.Find(id);
+                if (chamado == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(chamado);
             }
-            Chamado chamado = db.Chamado.Find(id);
-            if (chamado == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Erro", "Home");
             }
-            return View(chamado);
         }
 
-        // GET: Chamado/Create
         public ActionResult Create()
         {
-            return View();
+            if (Session["UserId"] != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Erro", "Home");
+            }
         }
 
-        // POST: Chamado/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Chamado chamado)
         {
-            if (ModelState.IsValid)
+            if (Session["UserId"] != null)
             {
-                chamado.Em_Andamento = false;
-                chamado.nome_usuario = Session["UserName"].ToString();
-                chamado.status = Enum.EnumChamado.ABERTO.ToString();
-                chamado.UsuarioId = (int)Session["UserID"];
-                chamado.data_chamado = DateTime.Now;
-                db.Chamado.Add(chamado);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+                if (ModelState.IsValid)
+                {
+                    chamado.reaberto = false;
+                    chamado.Em_Andamento = false;
+                    chamado.nome_usuario = Session["UserName"].ToString();
+                    chamado.status = Enum.EnumChamado.ABERTO.ToString();
+                    chamado.UsuarioId = (int)Session["UserID"];
+                    chamado.data_chamado = DateTime.Now;
+                    db.Chamado.Add(chamado);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
 
-            return View(chamado);
+                return View(chamado);
+            }
+            else
+            {
+                return RedirectToAction("Erro", "Home");
+            }
         }
 
-        // GET: Chamado/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            if (Session["UserId"] != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (Session["Permissao"].ToString() == "TEC" || Session["Permissao"].ToString() == "ADM")
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    Chamado chamado = db.Chamado.Find(id);
+                    if (chamado == null)
+                    {
+                        return HttpNotFound();
+                    }
+
+                    return View(chamado);
+                }
+                else
+                {
+                    return RedirectToAction("ErroPermissao", "Home");
+                }
             }
-            Chamado chamado = db.Chamado.Find(id);
-            if (chamado == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Erro", "Home");
             }
 
-            return View(chamado);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Chamado chamado)
         {
-            if (ModelState.IsValid)
+            if (Session["UserId"] != null)
             {
-                db.Entry(chamado).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (Session["Permissao"].ToString() == "TEC" || Session["Permissao"].ToString() == "ADM")
+                {
+                    if (ModelState.IsValid)
+                    {
+                        db.Entry(chamado).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    return View(chamado);
+
+                }
+                else
+                {
+                    return RedirectToAction("ErroPermissao", "Home");
+                }
             }
-            return View(chamado);
+            else
+            {
+                return RedirectToAction("Erro", "Home");
+            }
+
         }
 
         public ActionResult Aceitar(int? id)
         {
-            if (id == null)
+            if (Session["UserId"] != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Chamado chamado = db.Chamado.Find(id);
-            if (chamado == null)
-            {
-                return HttpNotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                if (Session["UserID"] != null)
+                if (Session["Permissao"].ToString() == "TEC" || Session["Permissao"].ToString() == "ADM")
                 {
-                    var idTec = (int)Session["UserID"];
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    Chamado chamado = db.Chamado.Find(id);
+                    if (chamado == null)
+                    {
+                        return HttpNotFound();
+                    }
 
-                    Usuario userTec = db.Usuario.Find(idTec);
-
-                    chamado.Em_Andamento = true;
-                    chamado.Tecnico_nome = userTec.nome;
-                    chamado.Tecnico1 = userTec.Id;
+                    if (ModelState.IsValid)
+                    {
+                        var idTec = (int)Session["UserID"];
+                        Usuario userTec = db.Usuario.Find(idTec);
+                        chamado.Em_Andamento = true;
+                        chamado.Tecnico_nome = userTec.nome;
+                        chamado.Tecnico1 = userTec.Id;
+                        db.Entry(chamado).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    return View(chamado);
                 }
-
-                db.Entry(chamado).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                else
+                {
+                    return RedirectToAction("ErroPermissao", "Home");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Erro", "Home");
             }
 
-            return View(chamado);
         }
 
         public ActionResult Fechar(int? id)
         {
-            if (id == null)
+            if (Session["UserId"] != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (Session["Permissao"].ToString() == "TEC" || Session["Permissao"].ToString() == "ADM")
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    Chamado chamado = db.Chamado.Find(id);
+                    if (chamado == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(chamado);
+                }
+                else
+                {
+                    return RedirectToAction("ErroPermissao", "Home");
+                }
             }
-            Chamado chamado = db.Chamado.Find(id);
-            if (chamado == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Erro", "Home");
             }
-
-            return View(chamado);
         }
 
-        // POST: Chamado/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Fechar(Chamado chamado)
         {
-            if (ModelState.IsValid)
+            if (Session["UserId"] != null)
             {
-                chamado.status = Enum.EnumChamado.FECHADO.ToString();
-                chamado.Em_Andamento = false;
-                chamado.avaliado = false;
-                chamado.Tecnico1 = (int)Session["UserID"];
-                db.Entry(chamado).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (Session["Permissao"].ToString() == "TEC" || Session["Permissao"].ToString() == "ADM")
+                {
+                    if (ModelState.IsValid)
+                    {
+                        Chamado cham = db.Chamado.Find(chamado.Id);
+                        cham.reaberto = chamado.reaberto;
+                        cham.status = Enum.EnumChamado.FECHADO.ToString();
+                        cham.Em_Andamento = false;
+                        cham.avaliado = false;
+                        cham.Tecnico1 = (int)Session["UserID"];
+                        cham.retorno_tec = chamado.retorno_tec;
+                        db.Entry(cham).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    return View(chamado);
+                }
+                else
+                {
+                    return RedirectToAction("ErroPermissao", "Home");
+                }
             }
-            return View(chamado);
+            else
+            {
+                return RedirectToAction("Erro", "Home");
+            }
         }
 
-
-        // GET: Chamado/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            if (Session["UserId"] != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (Session["Permissao"].ToString() == "ADM")
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    Chamado chamado = db.Chamado.Find(id);
+                    if (chamado == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(chamado);
+                }
+                else
+                {
+                    return RedirectToAction("ErroPermissao", "Home");
+                }
             }
-            Chamado chamado = db.Chamado.Find(id);
-            if (chamado == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Erro", "Home");
             }
-            return View(chamado);
         }
 
         // GET: Chamado/Edit/5
         public ActionResult Avaliar(int? id)
         {
-            if (id == null)
+            if (Session["UserId"] != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Chamado chamado = db.Chamado.Find(id);
+                if (chamado == null)
+                {
+                    return HttpNotFound();
+                }
+                List<string> solucionadoSN = new List<string>() { "SIM", "NÃO" };
+                ViewBag.solucionadoSN = solucionadoSN;
+
+                List<int> list = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+                ViewBag.Notas = list;
+                return View(chamado);
             }
-            Chamado chamado = db.Chamado.Find(id);
-            if (chamado == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Erro", "Home");
             }
-
-            List<string> solucionadoSN = new List<string>() {"SIM","NÃO"};
-            ViewBag.solucionadoSN = solucionadoSN;
-
-            List<int> list = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-            ViewBag.Notas = list;
-
-            return View(chamado);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Avaliar(Chamado chamado)
         {
-            if (ModelState.IsValid)
+            if (Session["UserId"] != null)
             {
-                chamado.avaliado = true;
-                if (chamado.solucionado_avaliacao == "SIM")
-                    chamado.solucionado_nota = 10;
-                else
-                    chamado.solucionado_nota = 0;
+                if (ModelState.IsValid)
+                {
+                    Chamado cham = db.Chamado.Find(chamado.Id);
+                    cham.solucionado_avaliacao = chamado.solucionado_avaliacao;
+                    cham.sugestao_avaliacao = chamado.sugestao_avaliacao;
+                    cham.avaliado = true;
 
-                chamado.Em_Andamento = false;
-                db.Entry(chamado).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                    if (chamado.solucionado_avaliacao == "SIM")
+                        cham.solucionado_nota = 10;
+                    else
+                        cham.solucionado_nota = 0;
+
+                    cham.Em_Andamento = false;
+                    db.Entry(cham).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                return View(chamado);
+
             }
-            return View(chamado);
+            else
+            {
+                return RedirectToAction("Erro", "Home");
+            }
         }
 
-        // POST: Chamado/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Chamado chamado = db.Chamado.Find(id);
-            db.Chamado.Remove(chamado);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (Session["UserId"] != null)
+            {
+                if (Session["Permissao"].ToString() == "ADM")
+                {
+                    Chamado chamado = db.Chamado.Find(id);
+                    db.Chamado.Remove(chamado);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return RedirectToAction("ErroPermissao", "Home");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Erro", "Home");
+            }
+
         }
 
         public ActionResult Reabrir(int? id)
         {
-            if (id == null)
+            if (Session["UserId"] != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (Session["Permissao"].ToString() == "TEC" || Session["Permissao"].ToString() == "ADM")
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    Chamado chamado = db.Chamado.Find(id);
+                    if (chamado == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(chamado);
+                }
+                else
+                {
+                    return RedirectToAction("ErroPermissao", "Home");
+                }
             }
-            Chamado chamado = db.Chamado.Find(id);
-            if (chamado == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Erro", "Home");
             }
 
-            return View(chamado);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Reabrir(Chamado chamado)
         {
-            if (ModelState.IsValid)
+            if (Session["UserId"] != null)
             {
-                chamado.reaberto = true;
-                chamado.status = Enum.EnumChamado.ABERTO.ToString();
-                chamado.Em_Andamento = false;
-                db.Entry(chamado).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (Session["Permissao"].ToString() == "TEC" || Session["Permissao"].ToString() == "ADM")
+                {
+                    if (ModelState.IsValid)
+                    {
+                        Chamado cham = db.Chamado.Find(chamado.Id);
+
+                        cham.reaberto = true;
+                        cham.status = Enum.EnumChamado.ABERTO.ToString();
+                        cham.Em_Andamento = false;
+                        cham.motivo_reaberto = chamado.motivo_reaberto;
+                        db.Entry(cham).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return RedirectToAction("ErroPermissao", "Home");
+                }
             }
-            return View(chamado);
+            else
+            {
+                return RedirectToAction("Erro", "Home");
+            }
         }
 
         protected override void Dispose(bool disposing)

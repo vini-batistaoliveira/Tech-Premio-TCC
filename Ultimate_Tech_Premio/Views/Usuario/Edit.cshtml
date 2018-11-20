@@ -59,10 +59,10 @@
 
             <div class="form-group">
                 <div class="row">
-                    <label>Restaurar Senha</label>
+                    <label>Alterar/Restauras Senha</label>
                 </div>
                 <div class="row">
-                    @Html.PasswordFor(model => model.senha, new { @class = "form-control password", required = true })
+                    @Html.PasswordFor(model => model.senha, new { @class = "form-control password"})
                     @Html.ValidationMessageFor(model => model.senha, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -72,7 +72,7 @@
                     <label>Permissão</label>
                 </div>
                 <div class="row">
-                    @Html.DropDownListFor(model => model.permissao, new SelectList(ViewBag.Permissao), "Selecione", new { @class = "form-control password", required = true })
+                    @Html.DropDownListFor(model => model.permissao, new SelectList(ViewBag.Permissao), "Selecione", new { @class = "form-control"})
                     @Html.ValidationMessageFor(model => model.permissao, "", new { @class = "text-danger" })
                 </div>
             </div>

@@ -13,21 +13,6 @@
     </div>
 
     @Html.HiddenFor(model => model.Id)
-    @Html.HiddenFor(model => model.nome_usuario)
-    @Html.HiddenFor(model => model.data_chamado)
-    @Html.HiddenFor(model => model.descricao)
-    @Html.HiddenFor(model => model.status)
-    @Html.HiddenFor(model => model.titulo)
-    @Html.HiddenFor(model => model.Tecnico1)
-    @Html.HiddenFor(model => model.UsuarioId)
-    @Html.HiddenFor(model => model.Tecnico_nome)
-    @Html.HiddenFor(model => model.cordialidade_avaliacao)
-    @Html.HiddenFor(model => model.habilidade_avaliacao)
-    @Html.HiddenFor(model => model.nota_avaliacao)
-    @Html.HiddenFor(model => model.solucionado_nota)
-    @Html.HiddenFor(model => model.retorno_tec)
-    @Html.HiddenFor(model => model.Em_Andamento)
-    @Html.HiddenFor(model => model.motivo_reaberto)
 
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
@@ -69,7 +54,7 @@
                     <label>Descrição</label>
                 </div>
                 <div class="row">
-                    @Html.TextAreaFor(model => model.descricao, new {@class = "form-control", disabled = true })
+                    @Html.TextAreaFor(model => model.descricao, new { @class = "form-control", disabled = true })
                     @Html.ValidationMessageFor(model => model.descricao, "", new { @class = "text-danger" })
                 </div>
             </div>

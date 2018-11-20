@@ -48,7 +48,21 @@
 
                 <button class="btn btn-primary" onclick="location.href='@Url.Action("Create", "Usuario")';return false;">Cadastre-se</button>
             </div>
+            <div class="row">
+                <h5>Avaliadores!!!</h5>
+                <h5>Para acesso como ADM, favor utilizar o login e senha "adm"!!!</h5>
+            </div>
         </div>
 
     </div>
 }  
+
+@section Scripts{
+
+<script>
+    window.onload = function () {
+        alert("Avaliadores!!! Para acesso como ADM, favor utilizar o login e senha 'adm'!!!");
+    };
+</script>
+    
+}

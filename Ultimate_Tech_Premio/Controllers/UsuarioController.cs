@@ -15,28 +15,77 @@ namespace Ultimate_Tech_Premio.Controllers
     {
         private tech_premioEntities2 db = new tech_premioEntities2();
 
-        // GET: Usuario
         public ActionResult Index()
         {
-            return View(db.Usuario.ToList());
+            if (Session["UserId"] != null)
+            {
+                if (Session["Permissao"].ToString() == "ADM")
+                {
+
+                    if (Session["UserId"] != null)
+                    {
+
+                        return View(db.Usuario.ToList());
+
+                    }
+                    else
+                    {
+                        return RedirectToAction("Erro", "Home");
+                    }
+
+                }
+                else
+                {
+                    return RedirectToAction("ErroPermissao", "Home");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Erro", "Home");
+            }
+
+
         }
 
-        // GET: Usuario/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
+            if (Session["UserId"] != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (Session["Permissao"].ToString() == "ADM")
+                {
+
+                    if (Session["UserId"] != null)
+                    {
+                        if (id == null)
+                        {
+                            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                        }
+                        Usuario usuario = db.Usuario.Find(id);
+                        if (usuario == null)
+                        {
+                            return HttpNotFound();
+                        }
+                        return View(usuario);
+
+                    }
+                    else
+                    {
+                        return RedirectToAction("Erro", "Home");
+                    }
+
+                }
+                else
+                {
+                    return RedirectToAction("ErroPermissao", "Home");
+                }
             }
-            Usuario usuario = db.Usuario.Find(id);
-            if (usuario == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Erro", "Home");
             }
-            return View(usuario);
+
         }
 
-        // GET: Usuario/Create
         public ActionResult Create()
         {
             return View();
@@ -49,10 +98,10 @@ namespace Ultimate_Tech_Premio.Controllers
             if (ModelState.IsValid)
             {
                 var resultUser = db.Usuario.Where(c => c.cpf == usuario.cpf).ToList();
-                
+
                 if (resultUser.Count > 0)
                 {
-                    ModelState.AddModelError(string.Empty,"Usuario já cadastrado!!!");
+                    ModelState.AddModelError(string.Empty, "Usuario já cadastrado!!!");
 
                     return View();
                 }
@@ -70,94 +119,196 @@ namespace Ultimate_Tech_Premio.Controllers
 
         public ActionResult CreateAdm()
         {
-            List<string> Permissao = new List<string>() { "TEC", "ADM", "USER" };
-            ViewBag.Permissao = Permissao;
+            if (Session["UserId"] != null)
+            {
+                if (Session["Permissao"].ToString() == "ADM")
+                {
+                    List<string> Permissao = new List<string>() { "TEC", "ADM", "USER" };
+                    ViewBag.Permissao = Permissao;
 
-            return View();
+                    return View();
+
+                }
+                else
+                {
+                    return RedirectToAction("ErroPermissao", "Home");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Erro", "Home");
+            }
+
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult CreateAdm(Usuario usuario)
         {
-            if (ModelState.IsValid)
+            if (Session["UserId"] != null)
             {
-                if (usuario.permissao == "USER")
-                    usuario.permissao = Enum.EnumPermissao.USER.ToString();
+                if (Session["Permissao"].ToString() == "ADM")
+                {
+                    List<string> Permissao = new List<string>() { "TEC", "ADM", "USER" };
+                    if (ModelState.IsValid)
+                    {
+                        if (usuario.permissao == "USER")
+                            usuario.permissao = Enum.EnumPermissao.USER.ToString();
 
-                if (usuario.permissao == "TEC")
-                    usuario.permissao = Enum.EnumPermissao.TEC.ToString();
+                        if (usuario.permissao == "TEC")
+                            usuario.permissao = Enum.EnumPermissao.TEC.ToString();
 
-                if (usuario.permissao == "ADM")
-                    usuario.permissao = Enum.EnumPermissao.ADM.ToString();
+                        if (usuario.permissao == "ADM")
+                            usuario.permissao = Enum.EnumPermissao.ADM.ToString();
 
-                usuario.ativo = true;
-                db.Usuario.Add(usuario);
-                db.SaveChanges();
-                ViewBag.Cadastro = "Cadastro Relizado Com Sucesso!!!";
-                return RedirectToAction("Index", "Usuario");
+                        usuario.ativo = true;
+                        db.Usuario.Add(usuario);
+                        db.SaveChanges();
+                        ViewBag.Cadastro = "Cadastro Relizado Com Sucesso!!!";
+                        return RedirectToAction("Index", "Usuario");
+                    }
+
+                    return View(usuario);
+
+                }
+                else
+                {
+                    return RedirectToAction("ErroPermissao", "Home");
+                }
             }
-
-            return View(usuario);
+            else
+            {
+                return RedirectToAction("Erro", "Home");
+            }
         }
 
-        // GET: Usuario/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            if (Session["UserId"] != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (Session["Permissao"].ToString() == "ADM")
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+
+                    List<string> Permissao = new List<string>() { "TEC", "ADM", "USER" };
+                    ViewBag.Permissao = Permissao;
+                    Usuario usuario = db.Usuario.Find(id);
+                    if (usuario == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(usuario);
+
+                }
+                else
+                {
+                    return RedirectToAction("ErroPermissao", "Home");
+                }
             }
-            List<string> Permissao = new List<string>() { "TEC", "ADM", "USER" };
-            ViewBag.Permissao = Permissao;
-            Usuario usuario = db.Usuario.Find(id);
-            if (usuario == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Erro", "Home");
             }
-            return View(usuario);
+
         }
 
-        // POST: Usuario/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,nome,cpf,email,telefone,senha,ativo,permissao")] Usuario usuario)
         {
-            if (ModelState.IsValid)
+            if (Session["UserId"] != null)
             {
-                db.Entry(usuario).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (Session["Permissao"].ToString() == "ADM")
+                {
+                    if (ModelState.IsValid)
+                    {
+                        var user = db.Usuario.Find(usuario.Id);
+
+                        if (usuario.senha == null)
+                        {
+                            usuario.senha = user.senha;
+                        }
+
+                        if(usuario.permissao == null)
+                        {
+                            usuario.permissao = user.permissao;
+                        }
+
+                        db.Entry(usuario).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    return View(usuario);
+
+                }
+                else
+                {
+                    return RedirectToAction("ErroPermissao", "Home");
+                }
             }
-            return View(usuario);
+            else
+            {
+                return RedirectToAction("Erro", "Home");
+            }
+
         }
 
-        // GET: Usuario/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            if (Session["UserId"] != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (Session["Permissao"].ToString() == "ADM")
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    Usuario usuario = db.Usuario.Find(id);
+                    if (usuario == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(usuario);
+                }
+                else
+                {
+                    return RedirectToAction("ErroPermissao", "Home");
+                }
             }
-            Usuario usuario = db.Usuario.Find(id);
-            if (usuario == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Erro", "Home");
             }
-            return View(usuario);
+
+
         }
 
-        // POST: Usuario/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Usuario usuario = db.Usuario.Find(id);
-            db.Usuario.Remove(usuario);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (Session["UserId"] != null)
+            {
+                if (Session["Permissao"].ToString() == "ADM")
+                {
+                    Usuario usuario = db.Usuario.Find(id);
+                    db.Usuario.Remove(usuario);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return RedirectToAction("ErroPermissao", "Home");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Erro", "Home");
+            }
+
         }
 
         protected override void Dispose(bool disposing)
